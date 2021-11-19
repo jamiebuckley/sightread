@@ -2,11 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import {
+  BrowserRouter,
+  Routes,
+  Route
+} from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
+import { BassNotes } from './games/BassNotes';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App/>}/>
+        <Route path="/bassnotes" element={<BassNotes/>}/>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
