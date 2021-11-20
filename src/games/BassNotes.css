@@ -1,0 +1,12 @@
+.flashWrong {
+    background-color: red!important;
+}
+
+.hide {
+    visibility: hidden;
+}
+
+.flashCorrect {
+    background-color: rgb(107, 196, 107)!important;
+    border: 1px solid green;
+}
