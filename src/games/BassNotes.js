@@ -14,12 +14,14 @@ export class BassNotes extends React.Component {
 
     notes = "cdefgab"
 
-    trebleRange = [3,4,5,6]
-    bassRangeNumbers = [1,2, 3,4]
-    bassRangeNotes = ["c/2", "e/4"]
+    trebleRangeNumbers = [3,4,5,6];
+    trebleRangeNotes = ["c/4", "c/6"];
+    bassRangeNumbers = [1,2, 3,4];
+    bassRangeNotes = ["c/2", "e/4"];
 
-    constructor() {
+    constructor(props) {
         super();
+        this.mode = props.mode;
         const newData = this.generateRandomNote();
         this.state = {
             note: newData.note,
@@ -32,14 +34,20 @@ export class BassNotes extends React.Component {
     }
 
     getNoteRange() {
-        const range = this.notes.split('').flatMap(note => this.bassRangeNumbers
+        const numbers = (this.mode === 'bass') ? this.bassRangeNumbers : this.trebleRangeNumbers;
+        const range = this.notes.split('').flatMap(note => numbers
             .map(range => [note, range])).sort((n1, n2) => { 
                 const c1 = this.notes.indexOf(n1[0])
                 const c2 = this.notes.indexOf(n2[0])
                 return cmp(n1[1], n2[1])  || cmp(c1, c2);
             })
             .map(a => `${a[0]}/${a[1]}`);
-        return range.slice(range.indexOf(this.bassRangeNotes[0]), range.indexOf(this.bassRangeNotes[1]));
+
+        if (this.mode === 'bass') {
+            return range.slice(range.indexOf(this.bassRangeNotes[0]), range.indexOf(this.bassRangeNotes[1]));
+        } else if (this.mode === 'treble') {
+            return range.slice(range.indexOf(this.trebleRangeNotes[0]), range.indexOf(this.trebleRangeNotes[1]));
+        }
     }
 
     shuffleArray(array) {
@@ -84,11 +92,11 @@ export class BassNotes extends React.Component {
         renderer.resize(200, 200);
         var context = renderer.getContext();
         var stave = new VF.Stave(10, 40, 100);
-        stave.addClef("bass");
+        stave.addClef(this.mode);
         stave.setContext(context).draw();
 
         var notes = [
-            new VF.StaveNote({clef: "bass", keys: [this.state.note], duration: "w" })
+            new VF.StaveNote({clef: this.mode, keys: [this.state.note], duration: "w" })
           ];
           
         var voice = new VF.Voice({num_beats: 4,  beat_value: 4});
@@ -103,21 +111,21 @@ export class BassNotes extends React.Component {
     }
 
     onChoiceMade(choice) {
-        const wasChoiceCorrect = choice == this.state.letter;
+        const wasChoiceCorrect = choice === this.state.letter;
         this.setState({
             choices: this.state.choices.map(c => {
                 if (wasChoiceCorrect) {
-                    if (c.note == choice) {
+                    if (c.note === choice) {
                         return { ...c, flashCorrect: true }
                     } else {
                         return { ...c, flashCorrect: null, flashWrong: null, hide: true }
                     }
                 }
                 else {
-                    if (c.note == choice) {
+                    if (c.note === choice) {
                         return { ...c, flashWrong: true }
                     }
-                    else if (c.note == this.state.letter) {
+                    else if (c.note === this.state.letter) {
                         return { ...c, flashCorrect: true }
                     } else {
                         return { ...c, hide: true }
@@ -170,7 +178,7 @@ export class BassNotes extends React.Component {
                 <nav className="breadcrumb is-centered" aria-label="breadcrumbs">
                     <ul>
                         <li><Link to="/">Home</Link></li>
-                        <li className="is-active"><a href="#" aria-current="page">Bass Notes</a></li>
+                        <li className="is-active"><a href="#" aria-current="page">{this.mode === 'bass' ? 'Bass' : 'Treble'} Notes</a></li>
                     </ul>
                 </nav>
 

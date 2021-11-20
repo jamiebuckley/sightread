@@ -15,7 +15,8 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App/>}/>
-        <Route path="/bassnotes" element={<BassNotes/>}/>
+        <Route path="/bassnotes" element={<BassNotes mode="bass"/>}/>
+        <Route path="/treblenotes" element={<BassNotes mode="treble"/>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
