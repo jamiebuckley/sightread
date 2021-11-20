@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
 import { BassNotes } from './games/BassNotes';
+import { CircleFifths } from './games/CircleFifths';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Route path="/" element={<App/>}/>
         <Route path="/bassnotes" element={<BassNotes mode="bass"/>}/>
         <Route path="/treblenotes" element={<BassNotes mode="treble"/>}/>
+        <Route path="/circlefifths" element={<CircleFifths/>}/>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
